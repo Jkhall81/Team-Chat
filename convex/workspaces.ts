@@ -33,7 +33,8 @@ export const join = mutation({
       .query("members")
       .withIndex("by_workspace_id_user_id", (q) =>
         q.eq("workspaceId", args.workspaceId).eq("userId", userId)
-      );
+      )
+      .unique();
 
     if (existingMember) {
       throw new Error("Already an active member of this workspace");
