@@ -40,11 +40,14 @@ const WorkspaceIdPage = () => {
 
     if (channelId) {
       router.push(`/workspace/${workspaceId}/channel/${channelId}`);
-    } else if (!open) {
+    } else if (!open && isAdmin) {
       console.log("open state inside useEffect", open);
       setOpen(true);
     }
   }, [
+    member,
+    memberLoading,
+    isAdmin,
     channelId,
     workspaceLoading,
     channelsLoading,
@@ -55,7 +58,7 @@ const WorkspaceIdPage = () => {
     workspaceId,
   ]);
 
-  if (workspaceLoading || channelsLoading) {
+  if (workspaceLoading || channelsLoading || memberLoading) {
     return (
       <div className="h-full flex-1 flex items-center justify-center flex-col gap-2">
         <Loader className="fize-6 animate-spin text-muted-foreground" />
@@ -63,10 +66,10 @@ const WorkspaceIdPage = () => {
     );
   }
 
-  if (!workspace) {
+  if (!workspace || !member) {
     return (
       <div className="h-full flex-1 flex items-center justify-center flex-col gap-2">
-        <TriangleAlert className="fize-6 animate-spin text-muted-foreground" />
+        <TriangleAlert className="fize-6 text-muted-foreground" />
         <span className="text-sm text-muted-foreground">
           Workspace not found
         </span>
